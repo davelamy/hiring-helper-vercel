@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dave Lamy — Why Hire Dave?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F1EA;
+    --ink: #1A1612;
+    --ink-muted: #6B6560;
+    --accent: #C84B2F;
+    --accent-light: #F2E8E4;
+    --rule: #D4CFCA;
+    --card-bg: #FFFFFF;
+    --sans: 'DM Sans', sans-serif;
+    --serif: 'Playfair Display', serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height: 100vh;
+  }
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 2rem 3rem 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .name {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .tagline {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-weight: 300;
+    margin-top: 0.5rem;
+  }
+
+  .masthead-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  .contact-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 3rem 5rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .input-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--ink);
+    border-radius: 2px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .input-headline {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .input-sub {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* Mode tabs */
+  .mode-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.25rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .mode-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    color: var(--ink-muted);
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .mode-tab:first-child { border-right: 1.5px solid var(--rule); }
+  .mode-tab.active {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .input-panel { display: none; }
+  .input-panel.active { display: block; }
+
+  .url-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .url-input {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .url-input:focus { border-color: var(--ink); }
+  .url-input::placeholder { color: var(--ink-muted); opacity: 0.7; }
+
+  .jd-textarea {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    resize: vertical;
+    min-height: 160px;
+    transition: border-color 0.15s;
+    margin-bottom: 10px;
+  }
+  .jd-textarea:focus { border-color: var(--ink); }
+  .jd-textarea::placeholder { color: var(--ink-muted); opacity: 0.7; }
+
+  .analyze-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0 1.5rem;
+    height: 42px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .analyze-btn:hover { background: #A83A20; }
+  .analyze-btn:active { transform: scale(0.98); }
+  .analyze-btn:disabled { background: var(--ink-muted); cursor: not-allowed; }
+
+  .analyze-btn-block {
+    display: block;
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .analyze-btn-block:hover { background: #A83A20; }
+  .analyze-btn-block:active { transform: scale(0.98); }
+  .analyze-btn-block:disabled { background: var(--ink-muted); cursor: not-allowed; }
+
+  .status-bar {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+  .status-bar.visible { display: flex; }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--rule);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-msg {
+    display: none;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: #FDE8E4;
+    border-left: 2px solid var(--accent);
+    font-size: 13px;
+    color: #7A2A18;
+    border-radius: 0 2px 2px 0;
+  }
+  .error-msg.visible { display: block; }
+
+  /* RESULTS */
+  #results { display: none; }
+  #results.visible { display: block; }
+
+  .verdict-strip {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 1.75rem 2rem;
+    border-radius: 2px;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .verdict-strip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .verdict-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9A9590;
+    margin-bottom: 0.5rem;
+  }
+
+  .verdict-text {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5px;
+    background: var(--rule);
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+
+  .reason-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+  }
+
+  .reason-number {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    opacity: 0.4;
+  }
+
+  .reason-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .reason-body {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-muted);
+  }
+
+  .concern-section { margin-bottom: 2.5rem; }
+
+  .concern-item {
+    border-left: 2px solid var(--accent);
+    padding: 0.75rem 0 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    background: var(--accent-light);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .concern-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .concern-body {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .questions-list {
+    list-style: none;
+    counter-reset: q;
+    margin-bottom: 2.5rem;
+  }
+  .questions-list li {
+    counter-increment: q;
+    display: flex;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .questions-list li::before {
+    content: counter(q, upper-alpha);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 20px;
+    margin-top: 2px;
+  }
+
+  .reset-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.25rem;
+    background: transparent;
+    color: var(--ink-muted);
+    border: 1.5px solid var(--rule);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .reset-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .masthead, .main, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .url-row { flex-direction: column; }
+    .masthead { flex-direction: column; align-items: flex-start; }
+    .masthead-right { align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div>
+    <div class="eyebrow">Candidate Profile</div>
+    <h1 class="name">Dave Lamy</h1>
+    <p class="tagline">Engineering Leader · Boulder, CO · 25+ years</p>
+  </div>
+  <div class="masthead-right">
+    <span class="contact-pill">davelamy@gmail.com</span>
+    <span class="contact-pill">+1 303-993-9634</span>
+    <span class="contact-pill"><a href="https://www.linkedin.com/in/dave-lamy-4568361/" target="_blank" style="color: inherit; text-decoration: underline;">linkedin</a></span>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="section-label">Job fit analysis</div>
+
+  <div class="input-card">
+    <h2 class="input-headline">Paste a job description URL.<br>Get an honest fit analysis.</h2>
+    <p class="input-sub">Drop in a job posting link or paste the description directly. This tool cross-references Dave's background and tells you where he fits, where there are gaps, and what to ask him.</p>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" id="tab-url" onclick="switchMode('url')">URL</button>
+      <button class="mode-tab" id="tab-text" onclick="switchMode('text')">Paste text</button>
+    </div>
+
+    <div class="input-panel active" id="panel-url">
+      <div class="url-row">
+        <input type="url" class="url-input" id="jd-url" placeholder="https://jobs.company.com/posting/..." />
+        <button class="analyze-btn" id="analyze-btn-url" onclick="analyze()">Analyze →</button>
+      </div>
+    </div>
+
+    <div class="input-panel" id="panel-text">
+      <textarea class="jd-textarea" id="jd-text" placeholder="Paste the full job description here..."></textarea>
+      <button class="analyze-btn-block" id="analyze-btn-text" onclick="analyze()">Analyze →</button>
+    </div>
+
+    <div class="status-bar" id="status-bar">
+      <div class="spinner"></div>
+      <span id="status-text">Fetching job description...</span>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <div id="results">
+    <div class="verdict-strip">
+      <div class="verdict-label">Overall assessment</div>
+      <div class="verdict-text" id="verdict-text"></div>
+    </div>
+
+    <div class="section-label">Why Dave fits this role</div>
+    <div class="reasons-grid" id="reasons-grid"></div>
+
+    <div class="section-label">Potential gaps or questions</div>
+    <div class="concern-section" id="concern-section"></div>
+
+    <div class="section-label">Questions worth asking him</div>
+    <ul class="questions-list" id="questions-list"></ul>
+
+    <button class="reset-btn" onclick="reset()">← Analyze another role</button>
+  </div>
+
+</main>
+
+<footer>
+  <span>Built by Dave Lamy · davelamy.vercel.app</span>
+  <span>Powered by Claude · claude.ai</span>
+</footer>
+
+<script>
+let currentMode = 'url';
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('tab-url').classList.toggle('active', mode === 'url');
+  document.getElementById('tab-text').classList.toggle('active', mode === 'text');
+  document.getElementById('panel-url').classList.toggle('active', mode === 'url');
+  document.getElementById('panel-text').classList.toggle('active', mode === 'text');
+  document.getElementById('error-msg').classList.remove('visible');
+}
+
+async function analyze() {
+  const errorMsg = document.getElementById('error-msg');
+  const statusBar = document.getElementById('status-bar');
+  const statusText = document.getElementById('status-text');
+  const results = document.getElementById('results');
+
+  const urlBtn = document.getElementById('analyze-btn-url');
+  const textBtn = document.getElementById('analyze-btn-text');
+
+  errorMsg.classList.remove('visible');
+  results.classList.remove('visible');
+
+  let body;
+
+  if (currentMode === 'url') {
+    const url = document.getElementById('jd-url').value.trim();
+    if (!url) return;
+    body = { mode: 'url', url };
+    statusText.textContent = 'Fetching job description...';
+  } else {
+    const text = document.getElementById('jd-text').value.trim();
+    if (!text) return;
+    body = { mode: 'text', text };
+    statusText.textContent = 'Analyzing fit...';
+  }
+
+  urlBtn.disabled = true;
+  textBtn.disabled = true;
+  statusBar.classList.add('visible');
+
+  try {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Analysis failed');
+
+    renderResults(data);
+    statusBar.classList.remove('visible');
+
+  } catch (err) {
+    statusBar.classList.remove('visible');
+    errorMsg.textContent = err.message;
+    errorMsg.classList.add('visible');
+  } finally {
+    urlBtn.disabled = false;
+    textBtn.disabled = false;
+  }
+}
+
+function renderResults(data) {
+  document.getElementById('verdict-text').textContent = data.verdict;
+
+  const grid = document.getElementById('reasons-grid');
+  grid.innerHTML = data.reasons.map((r, i) => `
+    <div class="reason-card">
+      <div class="reason-number">0${i + 1}</div>
+      <div class="reason-title">${r.title}</div>
+      <div class="reason-body">${r.body}</div>
+    </div>
+  `).join('');
+
+  const concerns = document.getElementById('concern-section');
+  if (!data.concerns || data.concerns.length === 0) {
+    concerns.innerHTML = '<p style="font-size:13px; color: var(--ink-muted); font-style: italic;">No significant gaps identified for this role.</p>';
+  } else {
+    concerns.innerHTML = data.concerns.map(c => `
+      <div class="concern-item">
+        <div class="concern-title">${c.title}</div>
+        <div class="concern-body">${c.body}</div>
+      </div>
+    `).join('');
+  }
+
+  const questions = document.getElementById('questions-list');
+  questions.innerHTML = data.questions.map(q => `<li>${q}</li>`).join('');
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function reset() {
+  document.getElementById('jd-url').value = '';
+  document.getElementById('jd-text').value = '';
+  document.getElementById('results').classList.remove('visible');
+  document.getElementById('error-msg').classList.remove('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('jd-url').addEventListener('keydown', e => {
+  if (e.key === 'Enter') analyze();
+});
+</script>
+
+</body>
+</html>

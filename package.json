@@ -1,0 +1,9 @@
+{
+  "name": "dave-lamy-hire",
+  "version": "1.0.0",
+  "description": "Hiring manager fit analysis tool for Dave Lamy",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
