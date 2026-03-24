@@ -137,6 +137,11 @@ export default async function handler(req, res) {
         .join('\n')
         .trim();
 
+      if (jdText) {
+        console.log('JD text length:', jdText.length);
+        console.log('JD text preview:', jdText.slice(0, 300));                
+      }
+
       if (!jdText || jdText.length < 100) {
         throw new Error('Could not extract job description from that URL. Try pasting the text instead.');
       }
