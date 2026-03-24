@@ -105,45 +105,31 @@ export default async function handler(req, res) {
   try {
     let jdText = '';
 
-    // Step 1: if URL mode, fetch the job description via web_search tool
+    // Step 1: if URL mode, fetch the job description directly
     if (mode === 'url') {
       if (!url) return res.status(400).json({ error: 'URL is required' });
 
-      const fetchRes = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
+      const pageRes = await fetch(url, {
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-beta': 'web-search-2025-03-05'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 2000,
-          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          messages: [{
-            role: 'user',
-            content: `Fetch and return the full text of this job posting. Return only the job description text, no commentary: ${url}`
-          }]
-        })
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        }
       });
 
-      const fetchData = await fetchRes.json();
-      if (fetchData.error) throw new Error(fetchData.error.message);
+      if (!pageRes.ok) throw new Error(`Could not fetch that URL (${pageRes.status}). Try pasting the text instead.`);
 
-      jdText = fetchData.content
-        .filter(b => b.type === 'text')
-        .map(b => b.text)
-        .join('\n')
-        .trim();
+      const html = await pageRes.text();
 
-      if (jdText) {
-        console.log('JD text length:', jdText.length);
-        console.log('JD text preview:', jdText.slice(0, 300));                
-      }
+      jdText = html
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 8000);
 
       if (!jdText || jdText.length < 100) {
-        throw new Error('Could not extract job description from that URL. Try pasting the text instead.');
+        throw new Error('Could not extract content from that URL. Try pasting the text instead.');
       }
 
     } else if (mode === 'text') {
